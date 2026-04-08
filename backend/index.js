@@ -1,25 +1,29 @@
 const express = require('express');
 const app = express();
-const http = require('http');
 const port = 3000;
+const path = require("path");
 
 const {engine} = require('express-handlebars');
 
-const server = http.createServer((req,res)=>{
-res.writeHead(200,{'Content-Type' : 'text/plain'});
-res.end('main');
 
+app.get('/',(req,res)=>{
+  res.render('main');
 });
+app.engine('handlebars',engine({
 
-app.engine('handlebars',handlebars({
-layoutDir:__dirname + '/views/layouts'
-}));
+  defaultLayout: 'main',
+  layoutsDir: __dirname + './views/layouts',
+  partialsDir: __dirname + './views/partials'
+}
+));
 app.set('view engine','./views');
 
 
+//root for the folder handlebars
+app.set('views', path.join(__dirname, 'views'));
 
 
 
-server.listen(3000,()=>{
-console.log('Server running at http://localhost:3000/');
+app.listen(3000,()=>{
+console.log(`Server running at http://localhost:${port}`);
 });
